@@ -111,32 +111,55 @@ SuperLearner <- function(Y, X, newX = NULL, family = gaussian(), SL.library,
 	  tempObsWeights <- obsWeights[-valid]
 
     # should this be converted to a lapply also?
-		for(s in seq(kScreen)) {
-		  screen_fn = get(library$screenAlgorithm[s], envir = env)
-			testScreen <- try(do.call(screen_fn, list(Y = tempOutcome, X = tempLearn, family = family, id = tempId, obsWeights = tempObsWeights)))
-			if(inherits(testScreen, "try-error")) {
-				warning(paste("replacing failed screening algorithm,", library$screenAlgorithm[s], ", with All()", "\n "))
+		for (s in seq(kScreen)) {
+		  # First, try to get the screener from the custom environment.
+		  # We use this approach in case the SuperLearner package was not
+		  # explicitly loaded.
+		  screen_fn = try(get(library$screenAlgorithm[s], envir = env), silent = T)
+		  if (inherits(screen_fn, "try-error")) {
+		    # If that fails, get it from the SuperLearner namespace.
+		    screen_fn = try(getFromNamespace(library$screenAlgorithm[s], "SuperLearner"),
+		                    silent = T)
+		  }
+		  screen_args = list(Y = tempOutcome, X = tempLearn, family = family, id = tempId,
+		                     obsWeights = tempObsWeights)
+			testScreen <- try(do.call(screen_fn, screen_args))
+			if (inherits(testScreen, "try-error")) {
+				warning(paste("replacing failed screening algorithm,", library$screenAlgorithm[s],
+				              ", with All()", "\n "))
 				tempWhichScreen[s, ] <- TRUE
 			} else {
 				tempWhichScreen[s, ] <- testScreen
 			}
-			if(verbose) {
+			if (verbose) {
 				message(paste("Number of covariates in ", library$screenAlgorithm[s], " is: ", sum(tempWhichScreen[s, ]), sep = ""))
 			}
 		} #end screen
 
     # should this be converted to a lapply also?
     out <- matrix(NA, nrow = nrow(tempValid), ncol = k)
-		for(s in seq(k)) {
-		  pred_fn = get(library$library$predAlgorithm[s], envir = env)
-			testAlg <- try(do.call(pred_fn, list(Y = tempOutcome, X = subset(tempLearn, select = tempWhichScreen[library$library$rowScreen[s], ], drop=FALSE), newX = subset(tempValid, select = tempWhichScreen[library$library$rowScreen[s], ], drop=FALSE), family = family, id = tempId, obsWeights = tempObsWeights)))
-			if(inherits(testAlg, "try-error")) {
+		for (s in seq(k)) {
+		  # First, try to get the screener from the custom environment.
+		  pred_fn = try(get(library$library$predAlgorithm[s], envir = env), silent = T)
+		  if (inherits(pred_fn, "try-error")) {
+		    # If that fails, attempt to get it from the SuperLearner namespace.
+		    pred_fn = try(getFromNamespace(library$library$predAlgorithm[s], "SuperLearner"),
+		                  silent = T)
+		  }
+		  pred_args = list(Y = tempOutcome,
+		                   X = subset(tempLearn, select = tempWhichScreen[library$library$rowScreen[s], ],
+		                              drop=FALSE),
+		                   newX = subset(tempValid, select = tempWhichScreen[library$library$rowScreen[s], ],
+		                                 drop=FALSE),
+		                   family = family, id = tempId, obsWeights = tempObsWeights)
+			testAlg <- try(do.call(pred_fn, pred_args))
+			if (inherits(testAlg, "try-error")) {
 				warning(paste("Error in algorithm", library$library$predAlgorithm[s], "\n  The Algorithm will be removed from the Super Learner (i.e. given weight 0) \n" ))
         # errorsInCVLibrary[s] <<- 1
 			} else {
 				out[, s] <- testAlg$pred
 			}
-			if(verbose) message(paste("CV", libraryNames[s]))
+			if (verbose) message(paste("CV", libraryNames[s]))
 		} #end library
 	  invisible(out)
 	}
@@ -175,7 +198,12 @@ SuperLearner <- function(Y, X, newX = NULL, family = gaussian(), SL.library,
   # whichScreen <- matrix(NA, nrow = kScreen, ncol = p)
 
   .screenFun <- function(fun, list) {
-    screen_fn = get(fun, envir = env)
+    # First, try to get the screener from the custom environment.
+    screen_fn = try(get(fun, envir = env), silent = T)
+    if (inherits(screen_fn, "try-error")) {
+      # If that fails, get it from the SuperLearner namespace.
+      screen_fn = try(getFromNamespace(fun, "SuperLearner"), silent = T)
+    }
     testScreen <- try(do.call(screen_fn, list))
     if (inherits(testScreen, "try-error")) {
   	  warning(paste("replacing failed screening algorithm,", fun, ", with All() in full data", "\n "))
@@ -207,7 +235,13 @@ SuperLearner <- function(Y, X, newX = NULL, family = gaussian(), SL.library,
     #   }
     # }
     .predFun <- function(index, lib, Y, dataX, newX, whichScreen, family, id, obsWeights, verbose, control, libraryNames) {
-      pred_fn = get(lib$predAlgorithm[index], envir = env)
+      # First, try to get the screener from the custom environment.
+      pred_fn = try(get(lib$predAlgorithm[index], envir = env), silent = T)
+      if (inherits(pred_fn, "try-error")) {
+        # If that fails, attempt to get it from the SuperLearner namespace.
+        pred_fn = try(getFromNamespace(lib$predAlgorithm[index], "SuperLearner"),
+                      silent = T)
+      }
       testAlg <- try(do.call(pred_fn, list(Y = Y, X = subset(dataX, select = whichScreen[lib$rowScreen[index], ], drop=FALSE), newX = subset(newX, select = whichScreen[lib$rowScreen[index], ], drop=FALSE), family = family, id = id, obsWeights = obsWeights)))
       # testAlg <- try(do.call(lib$predAlgorithm[index], list(Y = Y, X = dataX[, whichScreen[lib$rowScreen[index], drop = FALSE]], newX = newX[, whichScreen[lib$rowScreen[index], drop = FALSE]], family = family, id = id, obsWeights = obsWeights)))
       if (inherits(testAlg, "try-error")) {
