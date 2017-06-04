@@ -12,7 +12,7 @@ install:
 
 # Adapt as necessary starting from here
 
-before-install:
+before-build:
   # Avoid note about non-standard file/directory during R CMD check.
   - bash -c "echo '^travis-tool\.sh\.cmd$' >> .Rbuildignore"
 
