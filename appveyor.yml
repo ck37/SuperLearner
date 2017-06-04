@@ -15,7 +15,8 @@ build_script:
   - git config --global user.name "travis"
   - git config --global user.email "travis@example.org"
   - Rscript -e "install.packages('xgboost', repos=c('http://dmlc.ml/drat/', 'https://cran.cnr.berkeley.edu/'), type='source')"
-  - Rscript -e "source('http://bioconductor.org/biocLite.R'); biocLite(c('sva', 'genefilter'))"
+  - Rscript -e "source('https://bioconductor.org/biocLite.R')"
+  - travis-tool.sh install_bioc sva genefilter
   - travis-tool.sh install_deps
   - travis-tool.sh github_package jimhester/covr
 
@@ -35,7 +36,7 @@ on_success:
   - echo '%APPVEYOR_PULL_REQUEST_NUMBER%'
   #- ps: if ($env:SL_CRAN -eq "true" -and $env:APPVEYOR_PULL_REQUEST_NUMBER -eq "") {
   #    Rscript -e 'source("tests/testthat/_test-revdep.R")' }
-  - IF "%SL_CRAN%"=="true" IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" Rscript -e "source('tests/testthat/_test-revdep.R')"
+  - IF "%SL_CRAN%"=="true" IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" Rscript -e "source('tests/testthat/_test-revdep.R', echo = T)"
 
 environment:
   global:
