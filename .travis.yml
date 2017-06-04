@@ -51,6 +51,7 @@ env:
 warnings_are_errors: true
 #r_check_args: "--no-build-vignettes --no-manual --as-cran --timings"
 r_check_args: "--as-cran --timings"
+r_build_args:
 
 r_packages:
 # Install survival directly, to get the latest version and avoid
