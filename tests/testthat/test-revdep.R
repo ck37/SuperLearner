@@ -15,6 +15,10 @@ if (Sys.getenv("SL_CRAN") == "true" &&
     Sys.getenv("TRAVIS_PULL_REQUEST") %in% c("", "false") &&
     Sys.getenv("APPVEYOR_PULL_REQUEST_NUMBER") == "") {
 
+  cat("Checking reverse dependencies.\n")
+
+  print(sessionInfo())
+
   devtools::revdep_check(bioconductor = T, recursive = T,
              threads = RhpcBLASctl::get_num_cores())
 
