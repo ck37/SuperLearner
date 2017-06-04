@@ -67,10 +67,6 @@ bioc_packages:
   - genefilter
 
 after_success:
-  # Run devtools::check_revdep() if we have set an environmental variable
-  # SL_CRAN and we aren't processing a pull request.
-  # This would be done as prep for a CRAN release.
-  - test "$TRAVIS_PULL_REQUEST" == "false" && test "${SL_CRAN}" == "true" && Rscript -e "source('tests/testthat/_test-revdep.R')"
   - Rscript -e 'covr::codecov()'
 
 after_failure:
