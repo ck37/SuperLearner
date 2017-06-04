@@ -17,6 +17,12 @@ if (Sys.getenv("SL_CRAN") == "true" &&
 
   cat("Checking reverse dependencies.\n")
 
+  if (!requireNamespace("BiocInstaller")) {
+    # Manually re-install bioc, unclear why this is necessary.
+    source('https://bioconductor.org/biocLite.R')
+    biocLite()
+  }
+
   print(sessionInfo())
 
   devtools::revdep_check(bioconductor = T, recursive = T,
