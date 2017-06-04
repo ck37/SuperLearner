@@ -20,8 +20,8 @@ build_script:
   - git config --global user.name "travis"
   - git config --global user.email "travis@example.org"
   - Rscript -e "install.packages('xgboost', repos=c('http://dmlc.ml/drat/', 'https://cran.cnr.berkeley.edu/'), type='source')"
-  - travis-tool.sh install_bioc BiocInstaller
-  #- Rscript -e "source('https://bioconductor.org/biocLite.R')"
+  #- travis-tool.sh install_bioc BiocInstaller
+  - Rscript -e "source('https://bioconductor.org/biocLite.R'); biocLite()"
   #- travis-tool.sh install_bioc sva genefilter
   - travis-tool.sh install_bioc_deps
   - travis-tool.sh install_deps
