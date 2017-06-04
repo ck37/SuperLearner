@@ -66,6 +66,9 @@ bioc_packages:
   - genefilter
 
 after_success:
+  # Run devtools::check_revdep() if we have set an environmental variable SL_CRAN.
+  # This would be done as prep for a CRAN release.
+  - test ${SL_CRAN} == "true" && Rscript -e "source('tests/testthat/_test-revdep.R')"
   - Rscript -e 'covr::codecov()'
 
 after_failure:
