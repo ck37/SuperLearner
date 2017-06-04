@@ -18,7 +18,7 @@ if (Sys.getenv("SL_CRAN") == "true" &&
   cat("Checking reverse dependencies.\n")
 
   if (!requireNamespace("BiocInstaller")) {
-    # Manually re-install bioc, unclear why this is necessary.
+    # Manually re-install bioc, unclear why this is necessary on Appveyor.
     source('https://bioconductor.org/biocLite.R')
     biocLite()
   }
