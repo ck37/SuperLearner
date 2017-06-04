@@ -31,8 +31,13 @@ on_success:
   # Run devtools::check_revdep() if we're set the SL_CRAN environmental var.
   - ps: echo '$env:SL_CRAN'
   - ps: echo '$env:APPVEYOR_PULL_REQUEST_NUMBER'
+  - echo '%SL_CRAN%'
+  - echo '%APPVEYOR_PULL_REQUEST_NUMBER%'
   - ps: if ($env:SL_CRAN -eq "true" -and $env:APPVEYOR_PULL_REQUEST_NUMBER -eq "") {
       Rscript -e 'source("tests/testthat/_test-revdep.R")' }
+  - IF "%SL_CRAN%"=="true" IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="") (
+      Rscript -e 'source("tests/testthat/_test-revdep.R")'
+    )
 
 environment:
   global:
