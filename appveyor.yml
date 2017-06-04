@@ -16,7 +16,7 @@ before_build:
   # Avoid note about non-standard file/directory during R CMD check.
   - bash -c "echo '^travis-tool\.sh\.cmd$' >> .Rbuildignore"
 
-build_script:
+install:
   - git config --global user.name "travis"
   - git config --global user.email "travis@example.org"
   - Rscript -e "install.packages('xgboost', repos=c('http://dmlc.ml/drat/', 'https://cran.cnr.berkeley.edu/'), type='source')"
@@ -24,6 +24,8 @@ build_script:
   - travis-tool.sh install_bioc sva genefilter
   - travis-tool.sh install_deps
   - travis-tool.sh github_package jimhester/covr
+
+#build_script:
 
 test_script:
   - travis-tool.sh run_tests
