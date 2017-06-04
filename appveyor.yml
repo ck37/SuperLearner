@@ -29,8 +29,8 @@ on_failure:
 on_success:
   - Rscript -e 'covr::codecov()'
   # Run devtools::check_revdep() if we're set the SL_CRAN environmental var.
-  - ps: echo '$env:SL_CRAN'
-  - ps: echo '$env:APPVEYOR_PULL_REQUEST_NUMBER'
+  - ps: echo $env:SL_CRAN
+  - ps: echo $env:APPVEYOR_PULL_REQUEST_NUMBER
   - echo '%SL_CRAN%'
   - echo '%APPVEYOR_PULL_REQUEST_NUMBER%'
   - ps: if ($env:SL_CRAN -eq "true" -and $env:APPVEYOR_PULL_REQUEST_NUMBER -eq "") {
