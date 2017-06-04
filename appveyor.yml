@@ -33,9 +33,9 @@ on_success:
   - ps: echo $env:APPVEYOR_PULL_REQUEST_NUMBER
   - echo '%SL_CRAN%'
   - echo '%APPVEYOR_PULL_REQUEST_NUMBER%'
-  - ps: if ($env:SL_CRAN -eq "true" -and $env:APPVEYOR_PULL_REQUEST_NUMBER -eq "") {
-      Rscript -e 'source("tests/testthat/_test-revdep.R")' }
-  - IF "%SL_CRAN%"=="true" IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="") (
+  #- ps: if ($env:SL_CRAN -eq "true" -and $env:APPVEYOR_PULL_REQUEST_NUMBER -eq "") {
+  #    Rscript -e 'source("tests/testthat/_test-revdep.R")' }
+  - IF "%SL_CRAN%"=="true" IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" (
       Rscript -e 'source("tests/testthat/_test-revdep.R")'
     )
 
