@@ -1,12 +1,11 @@
 # This file is intended to be run prior to a release, not during
 # normal unit testing.
+# To run CI on Travis set env variable R_CHECK_REVDEP=1 in the web UI,
+# then re-build commit.
 
 # Based on https://github.com/HenrikBengtsson/future/tree/master/revdep
 library(SuperLearner)
-library(testthat)
 library(devtools)
-
-context("Reverse dependency checking")
 
 # Run manually or if SL_CRAN environmental variable is set and we're not in a
 # pull request build.
