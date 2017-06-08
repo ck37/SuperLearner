@@ -59,9 +59,9 @@ r_build_args:
 # reverse dependency checking.
 # Initial 2 lines based on travis docs.
 script:
-  - R CMD build .
-  - R CMD check *tar.gz
-  - test "${SL_CRAN}" = "true" && Rscript tests/cran/revdep.R
+  - R CMD build . #--no-build-vignettes --no-manual
+  - R CMD check *tar.gz --as-cran --timings
+  - test "${SL_CRAN}" = "true" && Rscript --verbose tests/cran/revdep.R
 
 
 r_packages:
@@ -81,4 +81,7 @@ after_success:
   - Rscript -e 'covr::codecov()'
 
 after_failure:
+# Check working directory & ls for debugging purposes.
+  - pwd
+  - ls -lh
   - ./travis-tool.sh dump_logs
