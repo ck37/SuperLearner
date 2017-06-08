@@ -57,10 +57,11 @@ r_build_args:
 
 # Override default Travis build process so that we can add conditional
 # reverse dependency checking.
+# Initial 2 lines based on travis docs.
 script:
   - R CMD build .
   - R CMD check *tar.gz
-  - test ${SL_CRAN} == "true" && Rscript tests/cran/revdep.R
+  - test "${SL_CRAN}" = "true" && Rscript tests/cran/revdep.R
 
 
 r_packages:
