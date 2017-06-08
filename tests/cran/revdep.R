@@ -1,10 +1,10 @@
 # This file is intended to be run prior to a release, not during
 # normal unit testing.
-# To run CI on Travis set env variable R_CHECK_REVDEP=1 in the web UI,
+# To run CI on Travis set env variable SL_CRAN=1 in the web UI,
 # then re-build commit.
 
 # Based on https://github.com/HenrikBengtsson/future/tree/master/revdep
-library(SuperLearner)
+# And https://github.com/travis-ci/travis-build/blob/master/lib/travis/build/script/r.rb#L256
 library(devtools)
 
 # Run manually or if SL_CRAN environmental variable is set and we're not in a
@@ -26,14 +26,23 @@ if (Sys.getenv("SL_CRAN") == "true" &&
 
   print(sessionInfo())
 
-  devtools::revdep_check(bioconductor = T, recursive = T,
-             threads = RhpcBLASctl::get_num_cores())
+  result = devtools::revdep_check(bioconductor = T, recursive = T,
+                                  threads = RhpcBLASctl::get_num_cores(),
+                                  # Set to F for debugging.
+                                  quiet_check = F)
 
-  # Save results to the revdep main directory.
-  devtools::revdep_check_save_summary()
+  if (length(result) > 0) {
+    # Save results to the revdep main directory.
+    devtools::revdep_check_save_summary()
 
-  # Print any problems.
-  print(devtools::revdep_check_print_problems())
+    # Print any problems.
+    print(devtools::revdep_check_print_problems())
+
+    # If this script is running inside travis CI, explicitly quit.
+    if (Sys.getenv("TRAVIS_R_VERSION") != "") {
+      q(status = 1, save = "no");
+    }
+  }
 } else {
   cat("Skipping revdep.\n")
 }

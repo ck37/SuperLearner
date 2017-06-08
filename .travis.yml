@@ -52,7 +52,16 @@ warnings_are_errors: true
 #r_check_args: "--no-build-vignettes --no-manual --as-cran --timings"
 r_check_args: "--as-cran --timings"
 r_build_args:
-r_check_revdep: true
+# Enable this for Travis to run reverse dependency checking.
+#r_check_revdep: true
+
+# Override default Travis build process so that we can add conditional
+# reverse dependency checking.
+script:
+  - R CMD build .
+  - R CMD check *tar.gz
+  - test ${SL_CRAN} == "true" && Rscript tests/cran/revdep.R
+
 
 r_packages:
 # Install survival directly, to get the latest version and avoid
