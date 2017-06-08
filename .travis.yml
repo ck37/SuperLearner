@@ -57,7 +57,8 @@ r_build_args:
 
 # Override default Travis build process so that we can add conditional
 # reverse dependency checking.
-# Initial 2 lines based on travis docs.
+# Initial 2 lines based on travis docs:
+# https://docs.travis-ci.com/user/languages/r/#Customizing-the-Travis-build-steps
 script:
   - R CMD build . #--no-build-vignettes --no-manual
   - R CMD check *tar.gz --as-cran --timings
