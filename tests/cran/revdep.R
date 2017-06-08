@@ -26,6 +26,9 @@ if (Sys.getenv("SL_CRAN") == "true" &&
 
   print(sessionInfo())
 
+  # Clear any existing results.
+  devtools::revdep_check_reset()
+
   # Turn off bioconductor check for now, but enable once this is working.
   result = devtools::revdep_check(bioconductor = F, recursive = T,
                                   threads = RhpcBLASctl::get_num_cores(),
