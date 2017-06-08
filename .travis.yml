@@ -39,7 +39,6 @@ compiler:
 
 env:
   global:
-    - CRAN="http://cran.rstudio.com"
     #- R_BUILD_ARGS="--no-build-vignettes --no-manual"
     - R_CHECK_TIME="TRUE"
     - R_CHECK_TESTS="TRUE"
@@ -48,6 +47,7 @@ env:
     # No error if suggested packages are not available.
     #- _R_CHECK_FORCE_SUGGESTS_=0
 
+cran: "http://cran.rstudio.com"
 warnings_are_errors: true
 #r_check_args: "--no-build-vignettes --no-manual --as-cran --timings"
 r_check_args: "--as-cran --timings"
@@ -81,10 +81,6 @@ bioc_packages:
 after_success:
   - Rscript -e 'covr::codecov()'
 
-after_failure:
-# Check working directory & ls for debugging purposes.
-  - pwd
-  # If build failed we may still be in sl subdir
-  - cd /home/travis/build
-  - ls -lh
-  - ./travis-tool.sh dump_logs
+#after_failure:
+  # This doesn't do anything because travis-tool.sh is no longer used.
+  # - ./travis-tool.sh dump_logs
