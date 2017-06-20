@@ -72,6 +72,15 @@ r_packages:
 # Install survival directly, to get the latest version and avoid
 # a build error from using an older version.
   - survival
+  # Reverse dependencies to make tests/cran/revdep.R not fail.
+  - CovSelHigh
+  - ltmle
+  - medflex
+  - simcausal
+  - subsemble
+  - tmle
+  - tmle.npvi
+  - tmlenet
 
 r_github_packages:
   - jimhester/covr
