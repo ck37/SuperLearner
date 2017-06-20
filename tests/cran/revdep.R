@@ -1,3 +1,6 @@
+#!/usr/bin/Rscript
+# ^ support Rscript execution
+
 # This file is intended to be run prior to a release, not during
 # normal unit testing.
 # To run CI on Travis set env variable SL_CRAN=1 in the web UI,

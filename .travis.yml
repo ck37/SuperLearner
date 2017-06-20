@@ -52,7 +52,7 @@ warnings_are_errors: true
 #r_check_args: "--no-build-vignettes --no-manual --as-cran --timings"
 r_check_args: "--as-cran --timings"
 r_build_args:
-# Enable this for Travis to run reverse dependency checking.
+# Enable this for Travis to run reverse dependency checking on all commits.
 #r_check_revdep: true
 
 # Override default Travis build process so that we can add conditional
