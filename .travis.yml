@@ -62,7 +62,10 @@ r_build_args:
 script:
   - R CMD build . #--no-build-vignettes --no-manual
   - R CMD check *tar.gz --as-cran --timings
-  - test "${SL_CRAN}" = "true" && Rscript --verbose tests/cran/revdep.R
+  # - test "${SL_CRAN}" = "true" && Rscript --verbose tests/cran/revdep.R
+  - if [ "${SL_CRAN}" == "true" ]; then
+      Rscript --verbose tests/cran/revdep.R;
+    fi
 
 
 r_packages:
