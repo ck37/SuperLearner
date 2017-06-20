@@ -9,6 +9,7 @@
 ^appveyor\.yml$
 ^codecov\.yml$
 ^revdep$
+^Makefile$
 
 # Files from building the Guide-to-SuperLearner.rmd vignette.
 ^SuperLearner.png$

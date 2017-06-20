@@ -7,3 +7,7 @@
 .DS_Store
 
 xgboost.model
+
+# R reverse dependency testing.
+revdep
+revdep.Rout
