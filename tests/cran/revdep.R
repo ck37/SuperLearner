@@ -49,6 +49,8 @@ if (Sys.getenv("SL_CRAN") == "true" &&
     if (Sys.getenv("TRAVIS_R_VERSION") != "") {
       q(status = 1, save = "no");
     }
+  } else {
+    cat("No reverse dependency problems found. Great job!\n")
   }
 } else {
   cat("Skipping revdep.\n")
