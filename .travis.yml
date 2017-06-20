@@ -60,6 +60,10 @@ r_build_args:
 # Initial 2 lines based on travis docs:
 # https://docs.travis-ci.com/user/languages/r/#Customizing-the-Travis-build-steps
 script:
+  # Install callr manually since CRAN version is old and this may help
+  # tests/cran/revdep.R to work correctly.
+  # Installing using r_github_packages doesn't seem to work right.
+  - Rscript -e 'source("https://install-github.me/r-lib/callr")'
   - R CMD build . #--no-build-vignettes --no-manual
   - R CMD check *tar.gz --as-cran --timings
   # - test "${SL_CRAN}" = "true" && Rscript --verbose tests/cran/revdep.R
@@ -84,7 +88,10 @@ r_packages:
 
 r_github_packages:
   - jimhester/covr
- #- jimhester/lintr
+  # Use custom devtools that shows more info during revdep_check()
+  - ck37/devtools
+  #- r-lib/callr
+  #- jimhester/lintr
 
 bioc_packages:
   - sva
