@@ -33,7 +33,8 @@ if (Sys.getenv("SL_CRAN") == "true" &&
   devtools::revdep_check_reset()
 
   # Turn off bioconductor check for now, but enable once this is working.
-  result = devtools::revdep_check(bioconductor = F, recursive = T,
+  # Turn off recursive check for now, but re-enable once this works.
+  result = devtools::revdep_check(bioconductor = F, recursive = F,
                                   threads = RhpcBLASctl::get_num_cores(),
                                   # Set to F for debugging.
                                   quiet_check = F)
