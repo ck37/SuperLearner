@@ -40,13 +40,19 @@ if (Sys.getenv("SL_CRAN") == "true" &&
     # First, disable all packages until we can get it to work.
     ignore_packages = c("CovSelHigh", "ltmle", "medflex", "simcausal",
                         "subsemble", "tmle", "tmle.npvi", "tmlenet")
+
+    # This should be /home/travis/R/library on Travis.
+    cat("Using R library:", Sys.getenv("R_LIBS_USER"), "\n")
+    # Set revdep.libpath to try to reuse packages we already installed.
+    options(devtools.revdep.libpath = Sys.getenv("R_LIBS_USER"))
   }
 
   # Turn off bioconductor check for now, but enable once this is working.
   # Turn off recursive check for now, but re-enable once this works.
   result = devtools::revdep_check(bioconductor = F, recursive = F,
                                   ignore = ignore_packages,
-                                  threads = RhpcBLASctl::get_num_cores(),
+                                  #threads = RhpcBLASctl::get_num_cores(),
+                                  threads = 1,
                                   # Set to F for debugging.
                                   quiet_check = F)
 
