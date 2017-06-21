@@ -38,8 +38,8 @@ if (Sys.getenv("SL_CRAN") == "true" &&
   # cause the check to fail.
   if (Sys.getenv("TRAVIS") == "true") {
     # First, disable all packages until we can get it to work.
-    ignore_packages = c("CovSelHigh", "ltmle", "medflex", "simcausal",
-                        "subsemble", "tmle", "tmle.npvi", "tmlenet")
+    #ignore_packages = c("CovSelHigh", "ltmle", "medflex", "simcausal",
+    #                    "subsemble", "tmle", "tmle.npvi", "tmlenet")
 
     # This should be /home/travis/R/library on Travis.
     cat("Using R library:", Sys.getenv("R_LIBS_USER"), "\n")
